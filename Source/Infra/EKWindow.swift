@@ -15,7 +15,8 @@ class EKWindow: UIWindow {
     init(with rootVC: UIViewController) {
         if #available(iOS 13.0, *) {
             // TODO: Patched to support SwiftUI out of the box but should require attendance
-            if let scene = UIApplication.shared.connectedScenes.first(where: { $0 is UIWindowScene } ) as? UIWindowScene {
+            // UIApplication에서 connectedScenes를 찾지 못하는 크래시가 발생하는데 정확한 원인 파악 불가, 실행하기 전에 무조건 responds 여부 확인 필요
+            if UIApplication.shared.responds(to: #selector(getter: UIApplication.connectedScenes)), let scene = UIApplication.shared.connectedScenes.first(where: { $0 is UIWindowScene } ) as? UIWindowScene {
                 super.init(windowScene: scene)
             } else {
                 super.init(frame: UIScreen.main.bounds)
